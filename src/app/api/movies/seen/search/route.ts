@@ -15,7 +15,6 @@ export async function GET(request: Request) {
     }
 
     movieData = await response.json();
-    console.log(startId, endId, name);
   } catch (error) {
     //console.error("Error fetching data:", error);
     return new Response("Error fetching data", { status: 500 });

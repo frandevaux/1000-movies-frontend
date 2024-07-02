@@ -45,4 +45,5 @@ export interface Movie {
   cast: CastMember[];
   director: Director;
   seen: boolean;
+  seen_date: Date | null;
 }

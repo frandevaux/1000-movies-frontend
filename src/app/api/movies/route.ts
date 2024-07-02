@@ -17,9 +17,6 @@ export async function GET(
       throw new Error("Network response was not ok");
     }
     movieData = await response.json().then((data) => {
-      console.log(startId);
-      console.log(endId);
-      console.log(data.length);
       return data;
     });
   } catch (error) {

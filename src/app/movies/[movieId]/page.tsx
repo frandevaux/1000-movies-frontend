@@ -35,7 +35,6 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
         .then((res) => res.json())
         .then((data) => {
           if (data.length > 0) {
-            console.log(data);
             setMovieData(data[0]);
             const releaseYear = new Date(data[0].release_date).getFullYear();
             setReleaseYear(releaseYear);
@@ -53,7 +52,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const handleSeen = () => {
     // Aquí puedes actualizar el estado de la película a "vista"
     const newSeen = !seen;
-    const modifiedData = { ...movieData, seen: newSeen };
+    const modifiedData = { ...movieData, seen: newSeen, seen_date: new Date() };
     updateMovieData(movieData.id, modifiedData);
     setSeen(newSeen);
   };

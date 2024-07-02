@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Checkbox,
   CircularProgress,
   Divider,
   Input,
@@ -14,10 +15,20 @@ import { useInView } from "react-intersection-observer";
 import { bebas } from "@/app/fonts";
 import { Movie } from "@/app/interfaces/movieDataInterfaces";
 import { Cartelera } from "@/app/components/cartelera";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { BiMinus } from "react-icons/bi";
 
 export default function Home() {
   const router = useRouter();
   const [showingSearchBar, setShowingSearchBar] = useState(false);
+  const [showingOriginalTitle, setShowingOriginalTitle] = useState(false);
+  const [titleFilter, setTitleFilter] = useState<"asc" | "desc" | "none">(
+    "none"
+  );
+  const [releaseFilter, setReleaseFilter] = useState<"asc" | "desc" | "none">(
+    "none"
+  );
+  const [showingFilters, setShowingFilters] = useState(false);
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [movieEndId, setMovieEndId] = useState(20);
   const [allMoviesLoaded, setAllMoviesLoaded] = useState(false);
@@ -27,12 +38,19 @@ export default function Home() {
   const { ref, inView } = useInView();
 
   const fetchSearchMovieData = useCallback(
-    async (searchTerm: string, startId: number, endId: number) => {
+    async (
+      searchTerm: string,
+      startId: number,
+      endId: number,
+      titleFilter: string,
+      releaseFilter: string
+    ) => {
+      const url = showingOriginalTitle
+        ? `/api/movies/search?name=${searchTerm}&startId=${startId}&endId=${endId}&releaseFilter=${releaseFilter}&originalTitleFilter=${titleFilter}`
+        : `/api/movies/search?name=${searchTerm}&startId=${startId}&endId=${endId}&titleFilter=${titleFilter}&releaseFilter=${releaseFilter}`;
       setIsLoading(true);
       try {
-        const res = await fetch(
-          `/api/movies/search?name=${searchTerm}&startId=${startId}&endId=${endId}`
-        );
+        const res = await fetch(url);
         const newData = await res.json();
         if (newData.length === 0) {
           setAllMoviesLoaded(true);
@@ -51,17 +69,29 @@ export default function Home() {
         setIsLoading(false);
       }
     },
-    []
+    [showingOriginalTitle]
   );
 
   const throttledFetch = useRef(
     // Función para realizar la llamada con cooldown de 1 segundo
-    async (searchTerm: string, startId: number, endId: number) => {
+    async (
+      searchTerm: string,
+      startId: number,
+      endId: number,
+      titleFilter: string,
+      releaseFilter: string
+    ) => {
       const now = Date.now();
       if (now - lastFetchTime >= 1000) {
         // Si ha pasado más de 1 segundo desde la última llamada
         setLastFetchTime(now);
-        await fetchSearchMovieData(searchTerm, startId, endId);
+        await fetchSearchMovieData(
+          searchTerm,
+          startId,
+          endId,
+          titleFilter,
+          releaseFilter
+        );
       } else {
         console.log("Llamada a la API rechazada: cooldown activo.");
       }
@@ -69,9 +99,16 @@ export default function Home() {
   );
 
   const handleLoadMore = useCallback(() => {
-    throttledFetch.current(searchTerm, movieEndId, movieEndId + 20);
+    throttledFetch.current(
+      searchTerm,
+      movieEndId,
+      movieEndId + 20,
+      titleFilter,
+      releaseFilter
+    );
+
     setMovieEndId((prevEndId) => prevEndId + 20);
-  }, [searchTerm, movieEndId]);
+  }, [searchTerm, movieEndId, throttledFetch, titleFilter, releaseFilter]);
 
   useEffect(() => {
     if (inView && !allMoviesLoaded && !isLoading) {
@@ -81,10 +118,18 @@ export default function Home() {
 
   useEffect(() => {
     if (searchTerm || searchTerm === "" || !showingSearchBar) {
-      throttledFetch.current(searchTerm, 0, 20); // Realiza la búsqueda con o sin término de búsqueda
+      throttledFetch.current(searchTerm, 0, 20, titleFilter, releaseFilter); // Realiza la búsqueda con o sin término de búsqueda
       setLastFetchTime(Date.now()); // Actualiza el último tiempo de fetch
     }
-  }, [searchTerm, showingSearchBar]);
+  }, [searchTerm, showingSearchBar, titleFilter, releaseFilter]);
+
+  // Efecto para actualizar la lista de películas cuando cambian los filtros
+  useEffect(() => {
+    setMovieList([]);
+    setMovieEndId(20);
+    setAllMoviesLoaded(false);
+    fetchSearchMovieData(searchTerm, 0, 20, titleFilter, releaseFilter);
+  }, [titleFilter, releaseFilter, searchTerm, fetchSearchMovieData]);
 
   const handleNewSearch = (value: string) => {
     setSearchTerm(value);
@@ -96,18 +141,43 @@ export default function Home() {
 
   // useEffect para cargar películas al inicio
   useEffect(() => {
-    fetchSearchMovieData("", 0, 20);
-  }, [fetchSearchMovieData]);
+    fetchSearchMovieData("", 0, 20, titleFilter, releaseFilter);
+  }, [fetchSearchMovieData, titleFilter, releaseFilter]);
+
+  const handleTitleFilter = () => {
+    setReleaseFilter("none");
+    if (titleFilter === "asc") {
+      setTitleFilter("desc");
+    } else if (titleFilter === "desc") {
+      setTitleFilter("none");
+    } else {
+      setTitleFilter("asc");
+    }
+  };
+
+  const handleReleaseFilter = () => {
+    setTitleFilter("none");
+    if (releaseFilter === "asc") {
+      setReleaseFilter("desc");
+    } else if (releaseFilter === "desc") {
+      setReleaseFilter("none");
+    } else {
+      setReleaseFilter("asc");
+    }
+  };
 
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
       <Cartelera
+        title="Cartelera"
         showingSearchBar={showingSearchBar}
         setShowingSearchBar={setShowingSearchBar}
+        showingFilters={showingFilters}
+        setShowingFilters={setShowingFilters}
       />
 
       <div
-        className={`flex justify-center w-screen   z-10 transition-opacity duration-300 ${
+        className={`flex justify-center w-screen z-10 transition-opacity duration-300 ${
           showingSearchBar ? "opacity-100 pb-5" : "opacity-0"
         }`}
       >
@@ -131,9 +201,59 @@ export default function Home() {
         )}
       </div>
 
+      <div
+        className={`flex justify-center w-screen z-10 transition-opacity duration-300 ${
+          showingFilters ? "opacity-100 pb-5" : "opacity-0"
+        }`}
+      >
+        {showingFilters && (
+          <div className="w-full flex justify-center gap-5">
+            <Checkbox
+              isSelected={showingOriginalTitle}
+              onValueChange={() =>
+                setShowingOriginalTitle(!showingOriginalTitle)
+              }
+              className="text-lg"
+            >
+              Título original
+            </Checkbox>
+            <Button
+              variant="light"
+              startContent={
+                titleFilter === "asc" ? (
+                  <IoIosArrowUp className="text-2xl " />
+                ) : titleFilter === "desc" ? (
+                  <IoIosArrowDown className="text-2xl " />
+                ) : (
+                  <BiMinus className="text-2xl " />
+                )
+              }
+              onPress={handleTitleFilter}
+            >
+              Título
+            </Button>
+            <Button
+              variant="light"
+              startContent={
+                releaseFilter === "asc" ? (
+                  <IoIosArrowUp className="text-2xl " />
+                ) : releaseFilter === "desc" ? (
+                  <IoIosArrowDown className="text-2xl " />
+                ) : (
+                  <BiMinus className="text-2xl " />
+                )
+              }
+              onPress={handleReleaseFilter}
+            >
+              Estreno
+            </Button>
+          </div>
+        )}
+      </div>
+
       <div className="overflow-hidden text-ellipsis">
         {isLoading && movieList.length === 0 ? (
-          <div className="flex flex-col h-[60vh] justify-center items-center">
+          <div className="flex flex-col h-[60vh] justify-center.items-center">
             <CircularProgress size="lg" color="default" />
           </div>
         ) : (
@@ -162,7 +282,7 @@ export default function Home() {
                         : `${bebas.className} text-ellipsis whitespace-nowrap`
                     }
                   >
-                    {movie.title}
+                    {showingOriginalTitle ? movie.original_title : movie.title}
                   </h2>
                 </Button>
                 <Divider className="my-2 w-2/3" />

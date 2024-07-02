@@ -6,7 +6,12 @@ export async function GET(
 
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/movie/${params.id}`
+      `${process.env.BACKEND_URL}/api/movie/${
+        params.id
+      }?timestamp=${new Date().getTime()}`,
+      {
+        cache: "no-store",
+      }
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");

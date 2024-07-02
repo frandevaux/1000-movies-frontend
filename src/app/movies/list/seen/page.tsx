@@ -1,10 +1,8 @@
 "use client";
 
-import { Cartelera } from "@/app/components/cartelera";
-import { bebas } from "@/app/fonts";
-import { Movie } from "@/app/interfaces/movieDataInterfaces";
 import {
   Button,
+  Checkbox,
   CircularProgress,
   Divider,
   Input,
@@ -12,12 +10,28 @@ import {
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { IoSearch } from "react-icons/io5";
+import { IoArrowUp, IoSearch } from "react-icons/io5";
 import { useInView } from "react-intersection-observer";
+
+import { FaArrowUp, FaLongArrowAltUp, FaMinus } from "react-icons/fa";
+import { TiArrowUp, TiArrowUpThick } from "react-icons/ti";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { BiMinus } from "react-icons/bi";
+import { Cartelera } from "@/app/components/cartelera";
+import { bebas } from "@/app/fonts";
+import { Movie } from "@/app/interfaces/movieDataInterfaces";
 
 export default function Home() {
   const router = useRouter();
   const [showingSearchBar, setShowingSearchBar] = useState(false);
+  const [showingOriginalTitle, setShowingOriginalTitle] = useState(false);
+  const [titleFilter, setTitleFilter] = useState<"asc" | "desc" | "none">(
+    "asc"
+  );
+  const [releaseFilter, setReleaseFilter] = useState<"asc" | "desc" | "none">(
+    "asc"
+  );
+  const [showingFilters, setShowingFilters] = useState(false);
   const [movieList, setMovieList] = useState<Movie[]>([]);
   const [movieEndId, setMovieEndId] = useState(20);
   const [allMoviesLoaded, setAllMoviesLoaded] = useState(false);
@@ -99,11 +113,34 @@ export default function Home() {
     fetchSearchMovieData("", 0, 20);
   }, [fetchSearchMovieData]);
 
+  const handleTitleFilter = () => {
+    if (titleFilter === "asc") {
+      setTitleFilter("desc");
+    } else if (titleFilter === "desc") {
+      setTitleFilter("none");
+    } else {
+      setTitleFilter("asc");
+    }
+  };
+
+  const handleReleaseFilter = () => {
+    if (releaseFilter === "asc") {
+      setReleaseFilter("desc");
+    } else if (releaseFilter === "desc") {
+      setReleaseFilter("none");
+    } else {
+      setReleaseFilter("asc");
+    }
+  };
+
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
       <Cartelera
+        title="Vistas"
         showingSearchBar={showingSearchBar}
         setShowingSearchBar={setShowingSearchBar}
+        showingFilters={showingFilters}
+        setShowingFilters={setShowingFilters}
       />
 
       <div
@@ -128,6 +165,56 @@ export default function Home() {
             endContent={<IoSearch />}
             onValueChange={handleNewSearch}
           />
+        )}
+      </div>
+
+      <div
+        className={`flex justify-center w-screen   z-10 transition-opacity duration-300 ${
+          showingFilters ? "opacity-100 pb-5" : "opacity-0"
+        }`}
+      >
+        {showingFilters && (
+          <div className="w-full flex justify-center gap-5">
+            <Checkbox
+              isSelected={showingOriginalTitle}
+              onValueChange={() =>
+                setShowingOriginalTitle(!showingOriginalTitle)
+              }
+              className="text-lg"
+            >
+              Título original
+            </Checkbox>
+            <Button
+              variant="light"
+              startContent={
+                titleFilter === "asc" ? (
+                  <IoIosArrowUp className="text-2xl " />
+                ) : titleFilter === "desc" ? (
+                  <IoIosArrowDown className="text-2xl " />
+                ) : (
+                  <BiMinus className="text-2xl " />
+                )
+              }
+              onPress={handleTitleFilter}
+            >
+              Título
+            </Button>
+            <Button
+              variant="light"
+              startContent={
+                releaseFilter === "asc" ? (
+                  <IoIosArrowUp className="text-2xl " />
+                ) : releaseFilter === "desc" ? (
+                  <IoIosArrowDown className="text-2xl " />
+                ) : (
+                  <BiMinus className="text-2xl " />
+                )
+              }
+              onPress={handleReleaseFilter}
+            >
+              Estreno
+            </Button>
+          </div>
         )}
       </div>
 
@@ -156,9 +243,13 @@ export default function Home() {
                   }}
                 >
                   <h2
-                    className={`${bebas.className} text-ellipsis whitespace-nowrap`}
+                    className={
+                      movie.seen
+                        ? `${bebas.className} text-ellipsis whitespace-nowrap line-through text-neutral-600`
+                        : `${bebas.className} text-ellipsis whitespace-nowrap`
+                    }
                   >
-                    {movie.title}
+                    {showingOriginalTitle ? movie.original_title : movie.title}
                   </h2>
                 </Button>
                 <Divider className="my-2 w-2/3" />

@@ -6,9 +6,12 @@ export async function GET(request: Request) {
   const startId = searchParams.get("startId");
   const endId = searchParams.get("endId");
   const name = searchParams.get("name");
+  const titleFilter = searchParams.get("titleFilter");
+  const releaseFilter = searchParams.get("releaseFilter");
+  const originalTitleFilter = searchParams.get("originalTitleFilter");
   try {
     const response = await fetch(
-      `${process.env.BACKEND_URL}/api/movies/search?name=${name}&startId=${startId}&endId=${endId}`,
+      `${process.env.BACKEND_URL}/api/movies/search?name=${name}&startId=${startId}&endId=${endId}&titleFilter=${titleFilter}&releaseFilter=${releaseFilter}&originalTitleFilter=${originalTitleFilter} `,
       {
         cache: "no-store",
       }
@@ -18,7 +21,7 @@ export async function GET(request: Request) {
     }
 
     movieData = await response.json();
-    console.log(startId, endId, name);
+    console.log(movieData);
   } catch (error) {
     //console.error("Error fetching data:", error);
     return new Response("Error fetching data", { status: 500 });
