@@ -1,0 +1,86 @@
+[
+  {
+    "genre_ids": [18, 80],
+    "id": 238,
+    "original_language": "en",
+    "original_title": "The Godfather",
+    "overview": "Don Vito Corleone, conocido dentro de los círculos del hampa como 'El Padrino', es el patriarca de una de las cinco familias que ejercen el mando de la Cosa Nostra en Nueva York en los años cuarenta. Don Corleone tiene cuatro hijos: una chica, Connie, y tres varones; Sonny, Michael y Fredo. Cuando el Padrino reclina intervenir en el negocio de estupefacientes, empieza una cruenta lucha de violentos episodios entre las distintas familias del crimen organizado.",
+    "poster_path": "/5HlLUsmsv60cZVTzVns9ICZD6zU.jpg",
+    "title": "El padrino",
+    "release_date": "1972-03-14",
+    "list_id": 1,
+    "seen": true
+  },
+  {
+    "genre_ids": [28, 18],
+    "id": 346,
+    "original_language": "ja",
+    "original_title": "七人の侍",
+    "overview": "Una banda de forajidos atemorizan a los habitantes de un pequeño pueblo, saqueándolos periódicamente sin piedad. Para repeler estos ataques, los aldeanos deciden contratar a mercenarios. Finalmente, consiguen los servicios de 7 guerreros, 7 samurais dispuestos a defenderlos a cambio, tan solo, de cobijo y comida.",
+    "poster_path": "/zr4DkzWIMjaWtj6hlsbN6dnNeTX.jpg",
+    "title": "Los siete samuráis",
+    "release_date": "1954-04-26",
+    "list_id": 2,
+    "seen": false
+  },
+  {
+    "genre_ids": [18, 80],
+    "id": 240,
+    "original_language": "en",
+    "original_title": "The Godfather Part II",
+    "overview": "Continuación de la saga de los Corleone con dos historias paralelas: la elección de Michael Corleone como jefe de los negocios familiares y los orígenes del patriarca, el ya fallecido Don Vito, primero en Sicilia y luego en Estados Unidos, donde, empezando desde abajo, llegó a ser un poderosísimo jefe de la mafia de Nueva York.",
+    "poster_path": "/mbry0W5PRylSUHsYzdiY2FSJwze.jpg",
+    "title": "El padrino. Parte II",
+    "release_date": "1974-12-20",
+    "list_id": 3,
+    "seen": false
+  },
+  {
+    "genre_ids": [53, 80],
+    "id": 680,
+    "original_language": "en",
+    "original_title": "Pulp Fiction",
+    "overview": "Jules y Vincent, dos asesinos a sueldo con muy pocas luces, trabajan para Marsellus Wallace. Vincent le confiesa a Jules que Marsellus le ha pedido que cuide de Mia, su mujer. Jules le recomienda prudencia porque es muy peligroso sobrepasarse con la novia del jefe. Cuando llega la hora de trabajar, ambos deben ponerse manos a la obra. Su misión: recuperar un misterioso maletín.",
+    "poster_path": "/hNcQAuquJxTxl2fJFs1R42DrWcf.jpg",
+    "title": "Pulp Fiction",
+    "release_date": "1994-09-10",
+    "list_id": 4,
+    "seen": false
+  },
+  {
+    "genre_ids": [18],
+    "id": 389,
+    "original_language": "en",
+    "original_title": "12 Angry Men",
+    "overview": "Tras escuchar todos los testimonios y valorar las pruebas presentadas, un jurado popular compuesto por doce hombres tiene que decidir, por unanimidad, si absuelve o condena a muerte a un joven acusado de haber matado a su padre. Al principio, once están completamente convencidos de su culpabilidad y se inclinan por la condena, pero el que discrepa empieza a plantear dudas razonables que, poco a poco, van resquebrajando la inicial seguridad de los demás.",
+    "poster_path": "/t88XfoxO5cX3f0qaSxWsBS0Lc3.jpg",
+    "title": "12 hombres sin piedad",
+    "release_date": "1957-04-10",
+    "list_id": 5,
+    "seen": false
+  },
+  {
+    "genre_ids": [12, 36, 10752],
+    "id": 947,
+    "original_language": "en",
+    "original_title": "Lawrence of Arabia",
+    "overview": "Biografía de T.E. Lawrence. El Cairo, 1917. Un conflictivo y enigmático oficial británico es enviado al desierto árabe durante la Gran Guerra en la campaña de ayuda a Arabia contra Turquía. En el desierto, se hace amigo de Sherif Ali Ben El Kharish y pone todo su empeño en la ayuda a los árabes. Éstos creen que Lawrence es otro amante del desierto que ayuda porque cree que Arabia es débil, mientras que sus superiores británicos creen que se ha vuelto loco. Cuando los planes de Lawrence consiguen llevarse a cabo con éxito, comienza a ganarse enemigos.",
+    "poster_path": "/dC79NWawemFooYsKfNT0gAsVbER.jpg",
+    "title": "Lawrence de Arabia",
+    "release_date": "1962-12-11",
+    "list_id": 6,
+    "seen": false
+  },
+  {
+    "genre_ids": [18, 36, 10752],
+    "id": 424,
+    "original_language": "en",
+    "original_title": "Schindler's List",
+    "overview": "Oskar Schindler, un hombre de enorme astucia y talento para las relaciones públicas, organiza un ambicioso plan para ganarse la simpatía de los nazis. Después de la invasión de Polonia por los alemanes, consigue, gracias a sus relaciones con los nazis, la propiedad de una fábrica de Cracovia. Allí emplea a cientos de operarios judíos, cuya explotación le hace prosperar rápidamente. Su gerente, también judío, es el verdadero director en la sombra, pues Schindler no tiene el menor conocimiento industrial.",
+    "poster_path": "/xnvHaMFNXzemoH4uXHDMtKnpF7l.jpg",
+    "title": "La lista de Schindler",
+    "release_date": "1993-12-15",
+    "list_id": 7,
+    "seen": false
+  }
+]
