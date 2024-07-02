@@ -243,11 +243,7 @@ export default function Home() {
                   }}
                 >
                   <h2
-                    className={
-                      movie.seen
-                        ? `${bebas.className} text-ellipsis whitespace-nowrap line-through text-neutral-600`
-                        : `${bebas.className} text-ellipsis whitespace-nowrap`
-                    }
+                    className={`${bebas.className} text-ellipsis whitespace-nowrap`}
                   >
                     {showingOriginalTitle ? movie.original_title : movie.title}
                   </h2>
