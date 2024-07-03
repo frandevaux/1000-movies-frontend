@@ -284,7 +284,6 @@ export default function Home() {
                         : `${bebas.className} text-ellipsis whitespace-nowrap`
                     }
                   >
-                    {movie.list_id + " "}
                     {showingOriginalTitle ? movie.original_title : movie.title}
                   </h2>
                 </Button>
