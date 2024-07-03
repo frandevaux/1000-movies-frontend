@@ -34,6 +34,7 @@ export interface Director {
 }
 
 export interface Movie {
+  list_id: number;
   genres: Genre[];
   id: number;
   original_language: string;

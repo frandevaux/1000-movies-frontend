@@ -177,14 +177,14 @@ export default function Home() {
       />
 
       <div
-        className={`flex justify-center w-screen z-10 transition-opacity duration-300 ${
+        className={`flex justify-center w-screen z-10 transition-opacity duration-300  ${
           showingSearchBar ? "opacity-100 pb-5" : "opacity-0"
         }`}
       >
         {showingSearchBar && (
           <Input
             size="lg"
-            className="w-2/3 dark"
+            className="w-2/3 dark h-[7vh]"
             classNames={{
               inputWrapper:
                 "bg-default-200/30 group-data-[focus=true]:bg-default-200/30 ",
@@ -207,7 +207,7 @@ export default function Home() {
         }`}
       >
         {showingFilters && (
-          <div className="w-full flex justify-center gap-5">
+          <div className="w-full flex justify-center gap-5 h-[7vh] items-center">
             <Checkbox
               isSelected={showingOriginalTitle}
               onValueChange={() =>
@@ -259,7 +259,9 @@ export default function Home() {
         ) : (
           <ScrollShadow
             className={`overflow-y-scroll overflow-x-hidden w-[90vw] ${
-              showingSearchBar ? "max-h-[66vh]" : "max-h-[74vh]"
+              showingSearchBar || showingFilters
+                ? "max-h-[66vh]"
+                : "max-h-[74vh]"
             } `}
           >
             {movieList.map((movie) => (
@@ -282,6 +284,7 @@ export default function Home() {
                         : `${bebas.className} text-ellipsis whitespace-nowrap`
                     }
                   >
+                    {movie.list_id + " "}
                     {showingOriginalTitle ? movie.original_title : movie.title}
                   </h2>
                 </Button>
