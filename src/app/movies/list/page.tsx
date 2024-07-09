@@ -13,8 +13,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useInView } from "react-intersection-observer";
 import { bebas } from "@/app/fonts";
-import { Movie } from "@/app/interfaces/movieDataInterfaces";
-import { Cartelera } from "@/app/components/cartelera";
+import { Movie } from "@/interfaces/movieDataInterfaces";
+import { Cartelera } from "@/components/cartelera";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiMinus } from "react-icons/bi";
 

@@ -8,18 +8,17 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { fetchMovieData } from "../../tmdbApi";
-import { Movie } from "../../interfaces/movieDataInterfaces";
+import { Movie } from "../../../interfaces/movieDataInterfaces";
 import { bebas, pt_sans } from "../../fonts";
 import router from "next/router";
 import { BiSolidMoviePlay } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa";
 import { TiArrowShuffle } from "react-icons/ti";
-import { getRandomMovieId } from "../../shuffle";
+import { getRandomMovieId } from "../../../utils/shuffle";
 import { useRouter } from "next/navigation";
-import { updateMovieData } from "../../utils/movieDataUtils";
 import { IoMdPerson } from "react-icons/io";
-import { OptionButtonGroup } from "../../components/optionButtonGroup";
+import { OptionButtonGroup } from "../../../components/optionButtonGroup";
+import { updateMovieData } from "@/utils/movieDataUtils";
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const router = useRouter();

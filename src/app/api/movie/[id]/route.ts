@@ -1,38 +1,29 @@
+import { connectDB } from "@/libs/mongodb";
+import movieSchema from "@/models/movie.model";
+
 export async function GET(
   _request: Request,
   { params }: { params: { id: string } }
 ) {
-  let movieData;
+  const { id } = params;
 
   try {
-    const response = await fetch(
-      `${process.env.BACKEND_URL}/api/movie/${
-        params.id
-      }?timestamp=${new Date().getTime()}`,
-      {
-        cache: "no-store",
-      }
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+    await connectDB();
+    const movieData = await movieSchema.find({ id: id });
+    if (!movieData) {
+      // Manejo en caso de respuesta vacía
+      return new Response("No movie data found", { status: 404 });
     }
-    movieData = await response.json();
+
+    return new Response(JSON.stringify(movieData), {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store",
+      },
+    });
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return new Response("Error fetching data", { status: 500 });
+    return new Response("Error fetching movie data", { status: 500 });
   }
-
-  if (!movieData) {
-    // Manejo en caso de respuesta vacía
-    return new Response("No data found", { status: 404 });
-  }
-
-  return new Response(JSON.stringify(movieData), {
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store",
-    },
-  });
 }
 
 export async function PUT(
@@ -40,33 +31,19 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const { id } = params;
+  const body = await request.json();
 
-  let updatedData;
   try {
     // Leer el cuerpo de la solicitud
-    const body = await request.json();
-    // Realizar la solicitud PUT al backend
-    const response = await fetch(`${process.env.BACKEND_URL}/api/movie/${id}`, {
-      method: "PUT",
+    await connectDB();
+    const updatedData = await movieSchema.updateOne({ id: id }, { $set: body });
+    return new Response(JSON.stringify(updatedData), {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body), // Datos que se enviarán para la actualización
     });
-
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-
-    updatedData = await response.json();
   } catch (error) {
-    console.error("Error updating data:", error);
-    return new Response("Error updating data", { status: 500 });
+    console.error("Error updating movie data:", error);
+    return new Response("Error updating movie data", { status: 500 });
   }
-
-  return new Response(JSON.stringify(updatedData), {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
 }

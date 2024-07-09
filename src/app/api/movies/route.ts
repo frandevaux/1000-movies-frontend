@@ -1,9 +1,6 @@
 import { start } from "repl";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { startId: string; endId: string } }
-) {
+export async function GET(request: Request) {
   let movieData;
   const { searchParams } = new URL(request.url);
   const startId = searchParams.get("startId");

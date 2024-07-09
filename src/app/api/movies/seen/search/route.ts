@@ -1,34 +1,44 @@
 import { start } from "repl";
+import movieSchema from "@/models/movie.model";
+import { useAuth } from "@/context/AuthContext";
 
 export async function GET(request: Request) {
-  let movieData;
   const { searchParams } = new URL(request.url);
   const startId = searchParams.get("startId");
-  const endId = searchParams.get("endId");
   const name = searchParams.get("name");
-  try {
-    const response = await fetch(
-      `${process.env.BACKEND_URL}/api/movies/seen/search?name=${name}&startId=${startId}&endId=${endId}`
-    );
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+
+  // Move the useAuth function call inside a React component
+  async function MyComponent() {
+    const { user, isAuthenticated } = useAuth();
+
+    if (!isAuthenticated) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+    let seenMoviesData;
+    if (startId) {
+      seenMoviesData = await movieSchema
+        .find({
+          name: { $regex: name, $options: "i" }, // Busca coincidencias que contengan 'name', insensible a mayúsculas
+          id: { $in: user?.seenMovies }, // Excluye películas cuyos IDs estén en el array de vistas
+        })
+        .skip(parseInt(startId, 10))
+        .limit(20);
+    } else {
+      seenMoviesData = await movieSchema
+        .find({
+          name: { $regex: name, $options: "i" }, // Busca coincidencias que contengan 'name', insensible a mayúsculas
+          id: { $in: user?.seenMovies }, // Excluye películas cuyos IDs estén en el array de vistas
+        })
+        .limit(20);
     }
 
-    movieData = await response.json();
-  } catch (error) {
-    //console.error("Error fetching data:", error);
-    return new Response("Error fetching data", { status: 500 });
+    return new Response(JSON.stringify(seenMoviesData), {
+      headers: {
+        "Content-Type": "application/json",
+        "Cache-Control": "no-store",
+      },
+    });
   }
 
-  if (!movieData) {
-    // Manejo en caso de respuesta vacía
-    return new Response("No data found", { status: 404 });
-  }
-
-  return new Response(JSON.stringify(movieData), {
-    headers: {
-      "Content-Type": "application/json",
-      "Cache-Control": "no-store",
-    },
-  });
+  return MyComponent();
 }

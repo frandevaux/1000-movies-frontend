@@ -17,9 +17,9 @@ import { FaArrowUp, FaLongArrowAltUp, FaMinus } from "react-icons/fa";
 import { TiArrowUp, TiArrowUpThick } from "react-icons/ti";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiMinus } from "react-icons/bi";
-import { Cartelera } from "@/app/components/cartelera";
+import { Cartelera } from "@/components/cartelera";
 import { bebas } from "@/app/fonts";
-import { Movie } from "@/app/interfaces/movieDataInterfaces";
+import { Movie } from "@/interfaces/movieDataInterfaces";
 
 export default function Home() {
   const router = useRouter();
@@ -47,16 +47,20 @@ export default function Home() {
         const res = await fetch(
           `/api/movies/seen/search?name=${searchTerm}&startId=${startId}&endId=${endId}`
         );
-        const newData = await res.json();
-        if (newData.length === 0) {
-          setAllMoviesLoaded(true);
+        if (!res.ok) {
+          console.error("Error fetching movie data:", res.statusText);
         } else {
-          if (startId === 0) {
-            // New search
-            setMovieList(newData);
+          const newData = await res.json();
+          if (newData.length === 0) {
+            setAllMoviesLoaded(true);
           } else {
-            // Load more
-            setMovieList((prev) => [...prev, ...newData]);
+            if (startId === 0) {
+              // New search
+              setMovieList(newData);
+            } else {
+              // Load more
+              setMovieList((prev) => [...prev, ...newData]);
+            }
           }
         }
       } catch (error) {
