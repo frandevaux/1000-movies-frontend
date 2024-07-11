@@ -1,16 +1,16 @@
+import { select } from "@nextui-org/react";
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
-      trim: true,
-      unique: true,
     },
     password: {
       type: String,
       required: true,
+      select: false,
     },
     email: {
       type: String,
@@ -27,4 +27,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("User", userSchema);
+export const User = mongoose.models.User || mongoose.model("User", userSchema);
+
+export default User;

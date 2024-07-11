@@ -1,6 +1,6 @@
 // interfaces/Movie.ts
 export interface User {
-  username: string;
+  name: string;
   email: string;
-  seenMovies: number[];
+  seenMovies: { id: number; seen_date: Date }[];
 }

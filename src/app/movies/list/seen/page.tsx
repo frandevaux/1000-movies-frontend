@@ -19,7 +19,9 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { BiMinus } from "react-icons/bi";
 import { Cartelera } from "@/components/cartelera";
 import { bebas } from "@/app/fonts";
-import { Movie } from "@/interfaces/movieDataInterfaces";
+import { set } from "mongoose";
+import { Movie } from "@/interfaces/movieData";
+import { LoginModal } from "@/components/loginModal";
 
 export default function Home() {
   const router = useRouter();
@@ -38,6 +40,7 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [lastFetchTime, setLastFetchTime] = useState(0); // Timestamp del último fetch
+  const [logInModalOpen, setLogInModalOpen] = useState(false);
   const { ref, inView } = useInView();
 
   const fetchSearchMovieData = useCallback(
@@ -47,7 +50,10 @@ export default function Home() {
         const res = await fetch(
           `/api/movies/seen/search?name=${searchTerm}&startId=${startId}&endId=${endId}`
         );
-        if (!res.ok) {
+        if (res.status === 401) {
+          setLogInModalOpen(true);
+          setAllMoviesLoaded(true);
+        } else if (!res.ok) {
           console.error("Error fetching movie data:", res.statusText);
         } else {
           const newData = await res.json();
@@ -221,6 +227,9 @@ export default function Home() {
           </div>
         )}
       </div>
+      {logInModalOpen && (
+        <LoginModal message="Inicia sesión para ver tus películas vistas" />
+      )}
 
       <div className="overflow-hidden text-ellipsis">
         {isLoading && movieList.length === 0 ? (

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Button, ButtonGroup, Divider } from "@nextui-org/react";
-import { Providers } from "./root_layout";
+import { Providers } from "./Providers";
 import { IoIosStar } from "react-icons/io";
 import Head from "next/head";
 

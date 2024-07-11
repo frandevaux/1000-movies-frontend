@@ -10,16 +10,15 @@ import { Button } from "@nextui-org/button";
 import { Divider, Input } from "@nextui-org/react";
 import { AppButton } from "@/components/appButton";
 
-const RegisterPage = () => {
+const LoginPage = () => {
   const router = useRouter();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleRegister = async () => {
+  const handleLogin = async () => {
     try {
-      await axios.post(`/api/auth/register`, { name, email, password });
       await signIn("credentials", {
         email,
         password,
@@ -39,10 +38,10 @@ const RegisterPage = () => {
 
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
-      <Cartelera title="Registro" />
+      <Cartelera title="Ingresar" />
       <div className="flex flex-col items-center mt-5 justify-center h-full gap-3">
         <AppButton onPress={() => {}} width="w-[80vw]">
-          Registrarse con Google
+          Continuar con Google
         </AppButton>
         <Divider />
         <Input
@@ -58,32 +57,29 @@ const RegisterPage = () => {
           value={password}
           onValueChange={setPassword}
         />
-        <Input
-          type="password"
-          label="Repetir contraseña"
-          value={repeatPassword}
-          onValueChange={setRepeatPassword}
-        />
-        <Input
-          type="text"
-          label="Nombre"
-          value={name}
-          onValueChange={setName}
-        />
-        <AppButton onPress={() => handleRegister()} width="w-[80vw]">
-          Registrarse con correo electronico
+
+        <AppButton onPress={handleLogin} width="w-[80vw]">
+          Continuar con correo electronico
         </AppButton>
         <AppButton
           onPress={() => {
-            router.push("/login");
+            router.push("/register");
           }}
           width="w-[80vw]"
         >
-          Iniciar sesión
+          Registrarse
+        </AppButton>
+        <AppButton
+          onPress={() => {
+            router.push("/movies");
+          }}
+          width="w-[80vw]"
+        >
+          Continuar como invitado
         </AppButton>
       </div>
     </main>
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

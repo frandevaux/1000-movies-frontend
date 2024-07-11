@@ -1,28 +1,39 @@
-export const POST = async (request: Request): Promise<Response> => {
-  try {
-    // Leer el cuerpo de la solicitud
-    const body = await request.json();
-    console.log("body", body);
-    // Realizar la solicitud PUT al backend
-    const response = await fetch(
-      `${process.env.BACKEND_URL}/api/random-movie`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body), // Datos que se enviarán para la actualización
-      }
-    );
+import { createAccessToken } from "@/libs/jwt";
+import { connectDB } from "@/libs/mongodb";
+import { User } from "@/models/user.model";
 
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
+import bcrypt from "bcrypt";
+import { cookies } from "next/headers";
+
+export const POST = async (request: Request): Promise<Response> => {
+  await connectDB();
+  const { email, password, name, seenMovies } = await request.json();
+  const cookieStore = cookies();
+  let userFound;
+
+  try {
+    userFound = await User.findOne({ email });
+    if (userFound) {
+      return new Response("Email already exists", { status: 409 });
     }
 
-    const data = await response.json();
-    return new Response(JSON.stringify(data), { status: 200 });
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      name,
+      email,
+      password: passwordHash,
+      seenMovies: seenMovies || [],
+    });
+
+    const userSaved = await newUser.save();
+    const token = await createAccessToken({ id: userSaved._id });
+    if (token) {
+      cookieStore.set("token", token.toString());
+    }
+
+    return new Response(JSON.stringify(userSaved), { status: 201 });
   } catch (error) {
-    //console.error("Error getting random movie:", error);
-    return new Response("Error getting random movie", { status: 500 });
+    return new Response("Internal server error", { status: 500 });
   }
 };

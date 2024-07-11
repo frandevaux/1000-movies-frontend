@@ -9,44 +9,78 @@ import {
   ScrollShadow,
 } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { IoSearch } from "react-icons/io5";
-import { useInView } from "react-intersection-observer";
-import { bebas } from "@/app/fonts";
-import { Movie } from "@/interfaces/movieDataInterfaces";
+import { useState } from "react";
+
 import { Cartelera } from "@/components/cartelera";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { BiMinus } from "react-icons/bi";
+
+import { logoutRequest } from "@/app/api/user/auth";
+import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
+
+type CustomSession = {
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    seenMovies?: any[]; // Adjust the type of seenMovies as needed
+  };
+};
+
+import { Session } from "inspector";
+import { AppButton } from "@/components/appButton";
+import { LoginModal } from "@/components/loginModal";
 
 export default function Profile() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const handleSignOut = async () => {
+
+  const { data: session, status } = useSession() as {
+    data: CustomSession;
+    status: string;
+  };
+  const handleLogout = async () => {
+    signOut({ callbackUrl: "/" });
+  };
+  const fetchUser = async () => {
+    console.log(session, status);
+  };
+  const handleUserToken = async () => {
     try {
-      const res = await fetch(`/api/signout`);
-      if (!res.ok) {
-        console.error("Error signing out:", res.statusText);
-      } else {
-        router.push("/");
-      }
+      const res = await axios.get("/api/auth/profile");
+      console.log(res.data);
     } catch (error) {
-      console.error("Error signing out:", error);
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
+      }
     }
   };
+
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
       <Cartelera title="Perfil" />
 
-      <div className="overflow-hidden text-ellipsis">
-        {isLoading ? (
-          <div className="flex flex-col h-[60vh] justify-center.items-center">
+      <div className="overflow-hidden text-ellipsis h-[60vh]">
+        {status === "loading" ? (
+          <div className="flex flex-col  justify-center items-center h-full">
             <CircularProgress size="lg" color="default" />
           </div>
-        ) : (
-          <div className="flex flex-col gap-4">
-            <Button variant="light" onPress={handleSignOut}>
+        ) : status === "authenticated" ? (
+          <div className="flex flex-col items-center mt-5 justify-center h-full gap-3">
+            <h1>¡Bienvenido {session.user?.name}!</h1>
+            <h1>
+              Peliculas vistas:{" "}
+              {session.user?.seenMovies?.length ?? 0 > 0
+                ? session.user?.seenMovies?.length ?? 0
+                : "0"}
+              {"/1000"}
+            </h1>
+            <AppButton onPress={handleLogout} width="w-[80vw]">
               Cerrar sesión
-            </Button>
+            </AppButton>
+          </div>
+        ) : (
+          <div className="flex flex-col items-center mt-5 justify-center h-full gap-3">
+            <LoginModal message="Inicia sesión para ver tu perfil" />
           </div>
         )}
       </div>

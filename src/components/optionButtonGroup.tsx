@@ -10,11 +10,26 @@ import { BiSolidMoviePlay } from "react-icons/bi";
 import { FaCheck, FaUserAlt } from "react-icons/fa";
 import { TiArrowShuffle } from "react-icons/ti";
 import { bebas } from "../app/fonts";
-import { getRandomMovieId } from "../utils/shuffle";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import axios from "axios";
 
 export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
   const router = props.router;
+  const handleGetRandomMovieId = async () => {
+    try {
+      const res = await axios.get("/api/random-movie");
+      if (res.status === 200) {
+        return res.data.id;
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data);
+        throw error.response?.data;
+      }
+      throw error;
+    }
+  };
+
   return (
     <div className="flex bottom-0 z-20 justify-center absolute pb-10  w-screen">
       <ButtonGroup className="gap-0">
@@ -23,7 +38,7 @@ export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
           className={`${bebas.className} text-3xl w-[15vw] h-[6vh] bg-transparent `}
           isIconOnly
           onPress={async () => {
-            let randomMovieId = await getRandomMovieId([]);
+            const randomMovieId = await handleGetRandomMovieId();
             router.push("/movies/" + randomMovieId);
           }}
         >
@@ -34,7 +49,7 @@ export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
           className={`${bebas.className} text-3xl w-[15vw] h-[6vh] bg-transparent  `}
           isIconOnly
           onPress={() => {
-            router.push("/");
+            router.push("/movies/list");
           }}
         >
           <BiSolidMoviePlay />

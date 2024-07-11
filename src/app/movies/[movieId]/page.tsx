@@ -8,13 +8,12 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Movie } from "../../../interfaces/movieDataInterfaces";
+import { Movie } from "../../../interfaces/movieData";
 import { bebas, pt_sans } from "../../fonts";
 import router from "next/router";
 import { BiSolidMoviePlay } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa";
 import { TiArrowShuffle } from "react-icons/ti";
-import { getRandomMovieId } from "../../../utils/shuffle";
 import { useRouter } from "next/navigation";
 import { IoMdPerson } from "react-icons/io";
 import { OptionButtonGroup } from "../../../components/optionButtonGroup";
@@ -30,20 +29,20 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   // Aquí puedes hacer una llamada a la API o acceder a los datos de la película utilizando el movieId
   useEffect(() => {
     const fetchMovieData = async () => {
-      await fetch("/api/movie/" + movieId)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.length > 0) {
-            setMovieData(data[0]);
-            const releaseYear = new Date(data[0].release_date).getFullYear();
-            setReleaseYear(releaseYear);
-            setSeen(data[0].seen);
-            setIsLoading(false);
-          } else {
-            // Manejar el caso en que data está vacío o no es como se esperaba
-            console.log("No hay datos disponibles");
-          }
-        });
+      try {
+        const response = await fetch(`/api/movie/${movieId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch movie data");
+        }
+
+        const data = await response.json();
+        setMovieData(data);
+        setReleaseYear(new Date(data.release_date).getFullYear());
+        setSeen(data.seen);
+        setIsLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchMovieData();
   }, [movieId]);
@@ -51,8 +50,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const handleSeen = () => {
     // Aquí puedes actualizar el estado de la película a "vista"
     const newSeen = !seen;
-    const modifiedData = { ...movieData, seen: newSeen, seen_date: new Date() };
-    updateMovieData(movieData.id, modifiedData);
+    updateMovieData(movieData.id, newSeen);
     setSeen(newSeen);
   };
 

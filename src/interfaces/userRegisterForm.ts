@@ -1,6 +1,6 @@
 // interfaces/Movie.ts
-export interface UserForm {
-  username: string;
+export interface UserRegisterForm {
+  name: string;
   email: string;
   password: string;
 }
