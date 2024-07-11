@@ -9,6 +9,7 @@ import { Cartelera } from "@/components/cartelera";
 import { Button } from "@nextui-org/button";
 import { Divider, Input } from "@nextui-org/react";
 import { AppButton } from "@/components/appButton";
+import Link from "next/link";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -39,7 +40,7 @@ const LoginPage = () => {
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
       <Cartelera title="Ingresar" />
-      <div className="flex flex-col items-center mt-5 justify-center h-full gap-3">
+      <div className="flex flex-col items-center mt-5  gap-3">
         <AppButton onPress={() => {}} width="w-[80vw]">
           Continuar con Google
         </AppButton>

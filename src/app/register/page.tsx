@@ -40,7 +40,7 @@ const RegisterPage = () => {
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
       <Cartelera title="Registro" />
-      <div className="flex flex-col items-center mt-5 justify-center h-full gap-3">
+      <div className="flex flex-col items-center mt-5  h-full gap-3">
         <AppButton onPress={() => {}} width="w-[80vw]">
           Registrarse con Google
         </AppButton>
