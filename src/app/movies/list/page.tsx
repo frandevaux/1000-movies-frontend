@@ -167,7 +167,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
+    <main className="flex h-full w-screen flex-col items-center text-2xl overflow-hidden">
       <Cartelera
         title="Cartelera"
         showingSearchBar={showingSearchBar}

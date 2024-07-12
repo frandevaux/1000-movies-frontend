@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { registerRequest } from "../api/user/auth";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
@@ -7,77 +7,117 @@ import { UserRegisterForm } from "@/interfaces/userRegisterForm";
 import axios from "axios";
 import { Cartelera } from "@/components/cartelera";
 import { Button } from "@nextui-org/button";
-import { Divider, Input } from "@nextui-org/react";
+import { Divider, Input, Link } from "@nextui-org/react";
 import { AppButton } from "@/components/appButton";
-import Link from "next/link";
+import { FcGoogle } from "react-icons/fc";
+import { bebas, inter, jost, pt_sans } from "../fonts";
+import { set } from "mongoose";
 
 const LoginPage = () => {
   const router = useRouter();
-  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [invalidCredentials, setInvalidCredentials] = useState(false);
   const [email, setEmail] = useState("");
+  const emailRef = useRef(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-  const handleLogin = async () => {
-    try {
-      await signIn("credentials", {
-        email,
-        password,
-        callbackUrl: "/",
-      });
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.error(error.response?.data);
-      } else {
-        console.error(
-          "Error registering user:",
-          error instanceof Error ? error.message : "Unknown error"
-        );
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>,
+    target: string
+  ): void => {
+    if (event.key === "Enter") {
+      switch (target) {
+        case "email":
+          passwordRef.current?.focus(); // Mueve el foco al siguiente input
+          break;
+        case "password":
+          handleLogin(); // Ejecuta el login en el último input
+          break;
+        default:
+          break;
       }
     }
   };
 
+  const handleLogin = async () => {
+    setInvalidCredentials(false);
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        if (res.status === 401) {
+          setInvalidCredentials(true);
+        }
+      } else {
+        router.push("/movies/list");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
-      <Cartelera title="Ingresar" />
-      <div className="flex flex-col items-center mt-5  gap-3">
-        <AppButton onPress={() => {}} width="w-[80vw]">
-          Continuar con Google
-        </AppButton>
-        <Divider />
-        <Input
-          type="email"
-          label="Correo electronico"
-          value={email}
-          onValueChange={setEmail}
-        />
+    <main className="flex h-screen w-screen flex-col items-center text-2xl justify-center gap-10   overflow-hidden  ">
+      <div>
+        <div className="flex flex-col  text-center gap-5 w-[80vw]">
+          <h1 className={`${bebas.className} text-6xl `}>Ingresar</h1>
+          <p className="text-lg font-medium">
+            Inicia sesión con tu correo electrónico o con Google
+          </p>
+        </div>
+        <div className="flex flex-col items-center mt-5  gap-10 pb-10">
+          <div className="flex flex-col items-center gap-3">
+            <Input
+              ref={emailRef}
+              type="email"
+              label="Correo electrónico"
+              variant="bordered"
+              isInvalid={invalidCredentials}
+              errorMessage={invalidCredentials ? "Credenciales inválidas" : ""}
+              value={email}
+              onValueChange={setEmail}
+              onKeyDown={(e) => handleKeyDown(e, "email")}
+            />
 
-        <Input
-          type="password"
-          label="Contraseña"
-          value={password}
-          onValueChange={setPassword}
-        />
+            <Input
+              ref={passwordRef}
+              type="password"
+              label="Contraseña"
+              variant="bordered"
+              isInvalid={invalidCredentials}
+              value={password}
+              onValueChange={setPassword}
+              onKeyDown={(e) => handleKeyDown(e, "password")}
+            />
 
-        <AppButton onPress={handleLogin} width="w-[80vw]">
-          Continuar con correo electronico
-        </AppButton>
-        <AppButton
-          onPress={() => {
-            router.push("/register");
-          }}
-          width="w-[80vw]"
+            <AppButton onPress={handleLogin} className="w-[80vw]" dark>
+              Continuar con correo electrónico
+            </AppButton>
+            <AppButton onPress={() => {}} className="w-[80vw]" dark>
+              <FcGoogle size={22} />
+              <h1>Continuar con Google</h1>
+            </AppButton>
+          </div>
+        </div>
+      </div>
+
+      <div className="text-lg flex flex-col  gap-6 text-center justify-center items-center ">
+        <Link
+          href="/register"
+          className="font-semibold text-white hover:text-[#cccccc]"
         >
-          Registrarse
-        </AppButton>
-        <AppButton
-          onPress={() => {
-            router.push("/movies");
-          }}
-          width="w-[80vw]"
+          ¿No tienes cuenta? Regístrate
+        </Link>
+        <Link
+          href="/movies/list"
+          className="font-semibold text-white hover:text-[#cccccc]"
         >
           Continuar como invitado
-        </AppButton>
+        </Link>
       </div>
     </main>
   );

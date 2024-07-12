@@ -12,7 +12,7 @@ export default function Home() {
     if (status === "authenticated") {
       router.push("/movies");
     } else if (status === "unauthenticated") {
-      router.push("/login");
+      router.push("/home");
     }
   }, [router, status]);
 }

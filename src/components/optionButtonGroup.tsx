@@ -32,10 +32,10 @@ export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
 
   return (
     <div className="flex bottom-0 z-20 justify-center absolute pb-10  w-screen">
-      <ButtonGroup className="gap-0">
+      <ButtonGroup className="justify-between w-[80vw]">
         <Button
           aria-label="Elegir una película al azar"
-          className={`${bebas.className} text-3xl w-[15vw] h-[6vh] bg-transparent `}
+          className={`${bebas.className} text-3xl w-full   h-[6vh] bg-transparent `}
           isIconOnly
           onPress={async () => {
             const randomMovieId = await handleGetRandomMovieId();
@@ -46,7 +46,7 @@ export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
         </Button>
         <Button
           aria-label="Mostrar todas las películas"
-          className={`${bebas.className} text-3xl w-[15vw] h-[6vh] bg-transparent  `}
+          className={`${bebas.className} text-3xl w-full  h-[6vh] bg-transparent  `}
           isIconOnly
           onPress={() => {
             router.push("/movies/list");
@@ -57,7 +57,7 @@ export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
 
         <Button
           aria-label="Mostrar todas las películas vistas"
-          className={`${bebas.className} text-xl w-[15vw] h-[6vh] bg-transparent `}
+          className={`${bebas.className} text-xl w-full  h-[6vh] bg-transparent `}
           isIconOnly
           onPress={() => {
             router.push("/movies/list/seen");
@@ -68,7 +68,7 @@ export const OptionButtonGroup = (props: { router: AppRouterInstance }) => {
 
         <Button
           aria-label="Perfil"
-          className={`${bebas.className} text-xl w-[15vw] h-[6vh] bg-transparent `}
+          className={`${bebas.className} text-xl w-full h-[6vh] bg-transparent `}
           isIconOnly
           onPress={() => {
             router.push("/movies/profile");

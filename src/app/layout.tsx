@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Button, ButtonGroup, Divider } from "@nextui-org/react";
 import { Providers } from "./Providers";
@@ -13,7 +13,11 @@ export const metadata: Metadata = {
     apple: "/icon512_maskable.png",
   },
 };
-
+export const viewport: Viewport = {
+  initialScale: 1,
+  width: "device-width",
+  maximumScale: 1,
+};
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -29,8 +33,11 @@ export default function RootLayout({
           content="black-translucent"
         />
       </Head>
-      <html lang="en" className="fixed h-full overflow-hidden">
-        <body className="overscroll-none w-[100vw] ">
+      <html
+        lang="en"
+        className="fixed h-[100vh] w-screen overflow-hidden overscroll-none"
+      >
+        <body>
           <Providers>
             <main className="min-h-screen flex justify-between flex-col dark text-xl  ">
               {children}

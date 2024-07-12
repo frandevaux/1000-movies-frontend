@@ -3,17 +3,24 @@ import { Button } from "@nextui-org/react";
 export const AppButton = ({
   onPress,
   children,
-  width,
+  className,
+  submit,
+  dark,
 }: {
   onPress: () => void;
-  children: string;
-  width?: string;
+  children: React.ReactNode;
+  className?: string;
+  submit?: boolean;
+  dark?: boolean;
 }) => {
   return (
     <Button
       variant="flat"
       radius="full"
-      className={` ${width} bg-neutral-900  text-lg whitespace-normal py-3 h-auto `}
+      type={submit ? "submit" : "button"}
+      className={` ${className}  ${
+        dark ? "bg-neutral-900 " : "bg-neutral-50 text-neutral-900  "
+      }   text-lg whitespace-normal py-3 h-auto font-semibold`}
       onPress={onPress}
     >
       {children}

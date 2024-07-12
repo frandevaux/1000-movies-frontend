@@ -39,24 +39,11 @@ export default function Profile() {
     status: string;
   };
   const handleLogout = async () => {
-    signOut({ callbackUrl: "/" });
-  };
-  const fetchUser = async () => {
-    console.log(session, status);
-  };
-  const handleUserToken = async () => {
-    try {
-      const res = await axios.get("/api/auth/profile");
-      console.log(res.data);
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
-      }
-    }
+    await signOut({ callbackUrl: "/" });
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden">
+    <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden ">
       <Cartelera title="Perfil" />
 
       <div className="overflow-hidden text-ellipsis h-[60vh]">
@@ -74,7 +61,7 @@ export default function Profile() {
                 : "0"}
               {"/1000"}
             </h1>
-            <AppButton onPress={handleLogout} width="w-[80vw]">
+            <AppButton onPress={handleLogout} className="w-[80vw]">
               Cerrar sesión
             </AppButton>
           </div>

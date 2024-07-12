@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Movie } from "../../../interfaces/movieData";
-import { bebas, pt_sans } from "../../fonts";
+import { bebas, jost, pt_sans } from "../../fonts";
 import router from "next/router";
 import { BiSolidMoviePlay } from "react-icons/bi";
 import { FaCheck } from "react-icons/fa";
@@ -18,9 +18,11 @@ import { useRouter } from "next/navigation";
 import { IoMdPerson } from "react-icons/io";
 import { OptionButtonGroup } from "../../../components/optionButtonGroup";
 import { updateMovieData } from "@/utils/movieDataUtils";
+import { useSession } from "next-auth/react";
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
-  const router = useRouter();
+  const font = pt_sans.className;
+  const { data, status } = useSession();
   const { movieId } = params;
   const [isLoading, setIsLoading] = useState(true);
   const [movieData, setMovieData] = useState<Movie>({} as Movie);
@@ -82,12 +84,12 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                 {movieData.title}
               </h1>
               {movieData.title != movieData.original_title && (
-                <h2 className={`${pt_sans.className} text-sm text-center `}>
+                <h2 className={`${font} text-sm text-center `}>
                   {movieData.original_title}
                 </h2>
               )}
 
-              <h2 className={`${pt_sans.className} text-sm `}>
+              <h2 className={`${font} text-sm `}>
                 {"Dirigida por " +
                   movieData.director.name +
                   " • " +
@@ -98,7 +100,13 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
             <div className="flex flex-col gap-6 overflow-hidden  ">
               <ScrollShadow className="max-h-[30vh] w-[80vw] ">
                 <div className="flex flex-col gap-6 ">
-                  <div className="flex  justify-between ">
+                  <div
+                    className={`flex ${
+                      status === "authenticated"
+                        ? "justify-between"
+                        : "justify-center"
+                    } w-full `}
+                  >
                     <Button
                       variant="flat"
                       radius="full"
@@ -110,21 +118,23 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                     >
                       Letterboxd
                     </Button>
-                    <Button
-                      variant="flat"
-                      radius="full"
-                      className={
-                        seen
-                          ? "w-[45%] bg-white  bg-opacity-25"
-                          : "w-[45%] bg-neutral-900   bg-opacity-25"
-                      }
-                      onPress={handleSeen}
-                    >
-                      {seen ? "Vista" : "Marcar como vista"}
-                    </Button>
+                    {status === "authenticated" && (
+                      <Button
+                        variant="flat"
+                        radius="full"
+                        className={
+                          seen
+                            ? "w-[45%] bg-white  bg-opacity-25"
+                            : "w-[45%] bg-neutral-900   bg-opacity-25"
+                        }
+                        onPress={handleSeen}
+                      >
+                        {seen ? "Vista" : "Marcar como vista"}
+                      </Button>
+                    )}
                   </div>
                   <div>
-                    <p className={`${pt_sans.className} text-lg `}>
+                    <p className={`${font} text-lg text-justify `}>
                       {movieData.overview}
                     </p>
                     <ScrollShadow
@@ -149,10 +159,10 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                           </div>
 
                           <div>
-                            <p className={`${pt_sans.className} text-sm `}>
+                            <p className={`${font} text-sm `}>
                               {movieData.director.name}
                             </p>
-                            <p className={`${pt_sans.className} text-xs `}>
+                            <p className={`${font} text-xs `}>
                               {movieData.director.job}
                             </p>
                           </div>
@@ -181,10 +191,10 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                               </div>
 
                               <div>
-                                <p className={`${pt_sans.className} text-sm `}>
+                                <p className={`${font} text-sm `}>
                                   {actor.name}
                                 </p>
-                                <p className={`${pt_sans.className} text-xs `}>
+                                <p className={`${font} text-xs `}>
                                   {actor.character}
                                 </p>
                               </div>

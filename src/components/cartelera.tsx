@@ -18,7 +18,7 @@ export const Cartelera = (params?: {
     setShowingSearchBar,
   } = params || {};
   return (
-    <div className="flex items-center flex-col w-full justify-center p-8  gap-2">
+    <div className="flex items-center flex-col w-full justify-center p-8  gap-2 ">
       <div className="flex items-center justify-center  gap-5">
         <Button
           onPress={() => {
