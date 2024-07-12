@@ -40,7 +40,7 @@ export default function Home() {
             </AppButton>
             <AppButton
               onPress={() => {
-                router.push("/register");
+                router.push("/credentials/register");
               }}
               className="w-[80vw]"
               dark

@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { Divider, Input, Link } from "@nextui-org/react";
 import { AppButton } from "@/components/appButton";
 import { FcGoogle } from "react-icons/fc";
-import { bebas, inter, jost, pt_sans } from "../fonts";
+import { bebas } from "@/app/fonts";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -58,7 +58,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center text-2xl justify-center gap-10   overflow-hidden  ">
+    <main className="flex h-[80%] w-screen flex-col items-center text-2xl justify-center gap-10   overflow-hidden  ">
       <div>
         <div className="flex flex-col  text-center gap-5 w-[80vw]">
           <h1 className={`${bebas.className} text-6xl `}>Ingresar</h1>
@@ -66,7 +66,7 @@ const LoginPage = () => {
             Inicia sesión con tu correo electrónico o con Google
           </p>
         </div>
-        <div className="flex flex-col items-center mt-5  gap-10 pb-10">
+        <div className="flex flex-col items-center mt-5  gap-10 ">
           <div className="flex flex-col items-center gap-3">
             <Input
               ref={emailRef}
@@ -104,7 +104,7 @@ const LoginPage = () => {
 
       <div className="text-lg flex flex-col  gap-6 text-center justify-center items-center ">
         <Link
-          href="/register"
+          href="/credentials/register"
           className="font-semibold text-white hover:text-[#cccccc]"
         >
           ¿No tienes cuenta? Regístrate

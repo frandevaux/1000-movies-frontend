@@ -11,7 +11,7 @@ export const LoginModal = ({ message }: { message: string }) => {
         <h1 className={` text-lg font-medium text-center`}>{message}</h1>
         <Divider />
         <AppButton
-          onPress={() => router.push("/login")}
+          onPress={() => router.push("/credentials/login")}
           className="w-[80%]"
           dark
         >

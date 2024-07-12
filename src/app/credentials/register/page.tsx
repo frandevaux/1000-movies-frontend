@@ -8,7 +8,7 @@ import { Button } from "@nextui-org/button";
 import { Divider, Input, Link } from "@nextui-org/react";
 import { AppButton } from "@/components/appButton";
 import { FcGoogle } from "react-icons/fc";
-import { bebas } from "../fonts";
+import { bebas } from "../../fonts";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { RegisterSchema } from "@/libs/zodSchema";
@@ -77,7 +77,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center text-2xl justify-center gap-10 overflow-hidden">
+    <main className="flex h-[85%] w-screen flex-col items-center text-2xl justify-center gap-10 overflow-hidden">
       <div>
         <div className="flex flex-col text-center gap-5 w-[80vw]">
           <h1 className={`${bebas.className} text-6xl`}>Registrarse</h1>
@@ -150,7 +150,7 @@ const RegisterPage = () => {
 
       <div className="text-lg flex flex-col gap-6 text-center justify-center items-center">
         <Link
-          href="/login"
+          href="/credentials/login"
           className="font-semibold text-[#ffffff] hover:text-[#cccccc] text-center"
         >
           ¿Ya tienes cuenta? Inicia sesión
