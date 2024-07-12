@@ -49,6 +49,8 @@ export default function Profile() {
   useEffect(() => {
     if (session) {
       fetchSeenMovies();
+    } else {
+      setIsLoading(false);
     }
   }, [session]);
 
