@@ -21,7 +21,6 @@ export const GET = async (request: any): Promise<Response> => {
         return new Response(JSON.stringify(randomMovie[0]), { status: 200 });
       }
     } else {
-      console.log("No token found");
       randomMovie = await movieSchema.aggregate([
         { $sample: { size: 1 } }, // Selecciona una película al azar de las no vistas
       ]);

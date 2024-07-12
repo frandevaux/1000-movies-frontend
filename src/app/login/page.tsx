@@ -1,17 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { registerRequest } from "../api/user/auth";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { UserRegisterForm } from "@/interfaces/userRegisterForm";
-import axios from "axios";
-import { Cartelera } from "@/components/cartelera";
-import { Button } from "@nextui-org/button";
 import { Divider, Input, Link } from "@nextui-org/react";
 import { AppButton } from "@/components/appButton";
 import { FcGoogle } from "react-icons/fc";
 import { bebas, inter, jost, pt_sans } from "../fonts";
-import { set } from "mongoose";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -37,6 +31,9 @@ const LoginPage = () => {
           break;
       }
     }
+  };
+  const handleGoogleRegister = async () => {
+    await signIn("google", { callbackUrl: "/movies/list" });
   };
 
   const handleLogin = async () => {
@@ -97,7 +94,7 @@ const LoginPage = () => {
             <AppButton onPress={handleLogin} className="w-[80vw]" dark>
               Continuar con correo electrónico
             </AppButton>
-            <AppButton onPress={() => {}} className="w-[80vw]" dark>
+            <AppButton onPress={handleGoogleRegister} className="w-[80vw]" dark>
               <FcGoogle size={22} />
               <h1>Continuar con Google</h1>
             </AppButton>

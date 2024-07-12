@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { registerRequest } from "../api/user/auth";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import axios from "axios";
@@ -67,6 +66,10 @@ const RegisterPage = () => {
         );
       }
     }
+  };
+
+  const handleGoogleRegister = async () => {
+    await signIn("google", { callbackUrl: "/movies/list" });
   };
 
   const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
@@ -137,13 +140,7 @@ const RegisterPage = () => {
             <AppButton onPress={() => {}} className="w-full" submit dark>
               Registrarse con correo electrónico
             </AppButton>
-            <AppButton
-              onPress={() => {
-                signIn("google");
-              }}
-              className="w-full"
-              dark
-            >
+            <AppButton onPress={handleGoogleRegister} className="w-full" dark>
               <FcGoogle size={22} />
               <h1>Registrarse con Google</h1>
             </AppButton>

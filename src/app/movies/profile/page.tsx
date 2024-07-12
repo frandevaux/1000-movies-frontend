@@ -1,20 +1,10 @@
 "use client";
 
-import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  Divider,
-  Input,
-  ScrollShadow,
-} from "@nextui-org/react";
+import { CircularProgress } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Cartelera } from "@/components/cartelera";
-
-import { logoutRequest } from "@/app/api/user/auth";
-import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 
 type CustomSession = {
@@ -26,13 +16,14 @@ type CustomSession = {
   };
 };
 
-import { Session } from "inspector";
 import { AppButton } from "@/components/appButton";
 import { LoginModal } from "@/components/loginModal";
+import axios from "axios";
 
 export default function Profile() {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [seenMoviesAmount, setSeenMoviesAmount] = useState(0);
 
   const { data: session, status } = useSession() as {
     data: CustomSession;
@@ -42,12 +33,31 @@ export default function Profile() {
     await signOut({ callbackUrl: "/" });
   };
 
+  const fetchSeenMovies = async () => {
+    try {
+      const response = await axios.get("/api/user/seenMovies");
+      setSeenMoviesAmount(response.data.seenMoviesAmount);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        console.log("User not logged in");
+      }
+      console.error("Error fetching seen movies:", error);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (session) {
+      fetchSeenMovies();
+    }
+  }, [session]);
+
   return (
     <main className="flex h-screen w-screen flex-col items-center text-2xl overflow-hidden ">
       <Cartelera title="Perfil" />
 
       <div className="overflow-hidden text-ellipsis h-[60vh]">
-        {status === "loading" ? (
+        {isLoading || status == "loading" ? (
           <div className="flex flex-col  justify-center items-center h-full">
             <CircularProgress size="lg" color="default" />
           </div>
@@ -55,13 +65,14 @@ export default function Profile() {
           <div className="flex flex-col items-center mt-5 justify-center h-full gap-3">
             <h1>¡Bienvenido {session.user?.name}!</h1>
             <h1>
-              Peliculas vistas:{" "}
-              {session.user?.seenMovies?.length ?? 0 > 0
-                ? session.user?.seenMovies?.length ?? 0
-                : "0"}
-              {"/1000"}
+              Has visto {seenMoviesAmount}{" "}
+              {seenMoviesAmount === 1
+                ? "película de 1000 "
+                : "películas de 1000 "}
+              {seenMoviesAmount == 0 && "😞"}
+              {seenMoviesAmount == 1000 && "🤠"}
             </h1>
-            <AppButton onPress={handleLogout} className="w-[80vw]">
+            <AppButton onPress={handleLogout} className="w-[80vw]" dark>
               Cerrar sesión
             </AppButton>
           </div>

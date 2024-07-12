@@ -10,21 +10,29 @@ export const POST = async (request: Request): Promise<Response> => {
   const { email, password, name, seenMovies } = await request.json();
   const cookieStore = cookies();
   let userFound;
+  let newUser;
 
   try {
     userFound = await User.findOne({ email });
     if (userFound) {
       return new Response("Email already exists", { status: 409 });
     }
+    if (password) {
+      const passwordHash = await bcrypt.hash(password, 10);
 
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    const newUser = new User({
-      name,
-      email,
-      password: passwordHash,
-      seenMovies: seenMovies || [],
-    });
+      newUser = new User({
+        name,
+        email,
+        password: passwordHash,
+        seenMovies: seenMovies || [],
+      });
+    } else {
+      newUser = new User({
+        name,
+        email,
+        seenMovies: seenMovies || [],
+      });
+    }
 
     const userSaved = await newUser.save();
     const token = await createAccessToken({ id: userSaved._id });

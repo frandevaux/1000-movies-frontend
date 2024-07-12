@@ -55,6 +55,22 @@ const handler = NextAuth({
       session.user = token.user as any;
       return session;
     },
+    async signIn({ user, account }): Promise<boolean> {
+      if (account?.provider === "google") {
+        await connectDB();
+        const userFound = await User.findOne({ email: user.email });
+        if (!userFound) {
+          const newUser = new User({
+            name: user.name,
+            email: user.email,
+            seenMovies: [],
+          });
+          await newUser.save();
+        }
+        return true;
+      }
+      return true;
+    },
   },
 });
 
