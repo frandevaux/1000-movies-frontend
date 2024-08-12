@@ -261,7 +261,7 @@ export default function Home() {
             className={`overflow-y-scroll overflow-x-hidden w-[90vw] ${
               showingSearchBar || showingFilters
                 ? "max-h-[66vh]"
-                : "max-h-[66vh]"
+                : "max-h-[70vh]"
             } `}
           >
             {movieList.map((movie) => (

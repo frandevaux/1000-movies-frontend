@@ -19,6 +19,8 @@ import { IoMdPerson } from "react-icons/io";
 import { OptionButtonGroup } from "../../../components/optionButtonGroup";
 import { updateMovieData } from "@/utils/movieDataUtils";
 import { useSession } from "next-auth/react";
+import { set } from "mongoose";
+import { CastMember } from "@/components/movie/castMember";
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const font = pt_sans.className;
@@ -56,6 +58,8 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
     setSeen(newSeen);
   };
 
+  const [posterModal, setPosterModal] = useState(false);
+
   return (
     <main className=" flex h-screen flex-col items-center text-2xl overflow-hidden bg-cover w-screen ">
       {isLoading ? (
@@ -63,23 +67,53 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
           <CircularProgress size="lg" color="default" />
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center ">
+        <div className="flex flex-col justify-center items-center h-screen   ">
           <div
             className=" brightness-50 blur-xl w-screen h-[110vh] fixed top-0 left-0 -z-2  bg-cover bg-center bg-no-repeat shadow-2xl transition-opacity"
             style={{
               backgroundImage: `url(https://image.tmdb.org/t/p/w500/${movieData.poster_path})`,
             }}
           ></div>
+
           <div className="absolute w-screen h-screen top-0 left-0  opacity-90 bg-gradient-to-b     from-black from-10% via-transparent to-black to-100%"></div>
-          <div className=" z-20 w-screen h-screen text-white flex pt-20   flex-col items-center p-10 gap-4">
-            <Image
-              src={"https://image.tmdb.org/t/p/w500/" + movieData.poster_path}
-              alt={movieData.title ?? "No title"}
-              width={200}
-              height={300}
-              className=" rounded-md   border-white border-2 transition-opacity "
-            />
-            <div className="flex flex-col items-center overflow-scroll max-h-[9.5vh]">
+          {posterModal && (
+            <>
+              <div className="  w-screen h-[110vh] fixed top-0 left-0 z-30 opacity-80  bg-black shadow-2xl transition-opacity"></div>
+              <div
+                className="absolute pb-40   w-screen h-screen  flex justify-center items-center z-30 "
+                onClick={() => setPosterModal(false)}
+              >
+                <Image
+                  src={
+                    "https://image.tmdb.org/t/p/original/" +
+                    movieData.poster_path
+                  }
+                  alt={movieData.title ?? "No title"}
+                  width={350}
+                  height={750}
+                  className="rounded-md border-white border-2 transition-opacity"
+                />
+              </div>
+            </>
+          )}
+          <ScrollShadow className=" z-20 w-screen h-screen mb-[10vh] pt-10 top-0 text-white flex    flex-col items-center  gap-4">
+            <Button
+              className=" w-[48vw] h-[35vh] bg-transparent"
+              onPress={() => {
+                setPosterModal(true);
+              }}
+              isIconOnly
+            >
+              <Image
+                src={"https://image.tmdb.org/t/p/w500/" + movieData.poster_path}
+                alt={movieData.title ?? "No title"}
+                width={200}
+                height={300}
+                className=" rounded-md   border-white border-2 transition-opacity "
+              />
+            </Button>
+
+            <div className="flex flex-col items-center ">
               <h1 className={`${bebas.className} text-4xl  text-center`}>
                 {movieData.title}
               </h1>
@@ -97,8 +131,8 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
               </h2>
             </div>
 
-            <div className="flex flex-col gap-6 overflow-hidden  ">
-              <ScrollShadow className="max-h-[30vh] w-[80vw] ">
+            <div className="flex flex-col gap-6   ">
+              <div className="max-h-[30vh] w-[80vw] ">
                 <div className="flex flex-col gap-6 ">
                   <div
                     className={`flex ${
@@ -133,7 +167,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                       </Button>
                     )}
                   </div>
-                  <div>
+                  <div className="pb-10">
                     <p className={`${font} text-lg text-justify `}>
                       {movieData.overview}
                     </p>
@@ -143,71 +177,30 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                       className="  mt-8 px-3 "
                     >
                       <div className="flex gap-4  ">
-                        <div
-                          key={movieData.director.id}
-                          className="flex flex-col gap-2"
-                        >
-                          <div className=" w-[6rem]   ">
-                            <Image
-                              src={
-                                "https://image.tmdb.org/t/p/w500/" +
-                                movieData.director.profile_path
-                              }
-                              alt={movieData.director.name}
-                              className="rounded-md border-white border-2 transition-opacity"
-                            />
-                          </div>
-
-                          <div>
-                            <p className={`${font} text-sm `}>
-                              {movieData.director.name}
-                            </p>
-                            <p className={`${font} text-xs `}>
-                              {movieData.director.job}
-                            </p>
-                          </div>
-                        </div>
+                        <CastMember
+                          name={movieData.director.name}
+                          character="Director"
+                          profile_path={movieData.director.profile_path}
+                          font={font}
+                        />
                         <div className=" flex flex-row gap-4 pr-3 justify-center ">
                           {movieData.cast.map((actor) => (
-                            <div
+                            <CastMember
                               key={actor.id}
-                              className="flex flex-col gap-2 "
-                            >
-                              <div className=" w-[6rem]  ">
-                                {actor.profile_path ? (
-                                  <Image
-                                    src={
-                                      "https://image.tmdb.org/t/p/w500/" +
-                                      actor.profile_path
-                                    }
-                                    alt={actor.name}
-                                    className="rounded-md border-white border-2"
-                                  />
-                                ) : (
-                                  <div className="w-[7rem] h-[10.25rem] bg-neutral-900 bg-opacity-70 rounded-md border-white border-2 flex">
-                                    <IoMdPerson size={50} className="m-auto" />
-                                  </div>
-                                )}
-                              </div>
-
-                              <div>
-                                <p className={`${font} text-sm `}>
-                                  {actor.name}
-                                </p>
-                                <p className={`${font} text-xs `}>
-                                  {actor.character}
-                                </p>
-                              </div>
-                            </div>
+                              name={actor.name}
+                              character={actor.character}
+                              profile_path={actor.profile_path}
+                              font={font}
+                            />
                           ))}
                         </div>
                       </div>
                     </ScrollShadow>
                   </div>
                 </div>
-              </ScrollShadow>
+              </div>
             </div>
-          </div>
+          </ScrollShadow>
         </div>
       )}
     </main>

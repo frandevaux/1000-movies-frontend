@@ -32,7 +32,7 @@ export default function Home() {
           <div className="flex flex-col items-center gap-3">
             <AppButton
               onPress={() => {
-                router.push("/login");
+                router.push("/credentials/login");
               }}
               className="w-[80vw]"
             >
