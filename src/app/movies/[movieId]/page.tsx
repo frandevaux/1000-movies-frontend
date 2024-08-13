@@ -1,7 +1,6 @@
 "use client";
 import {
   Button,
-  ButtonGroup,
   CircularProgress,
   Image,
   ScrollShadow,
@@ -9,17 +8,9 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Movie } from "../../../interfaces/movieData";
-import { bebas, jost, pt_sans } from "../../fonts";
-import router from "next/router";
-import { BiSolidMoviePlay } from "react-icons/bi";
-import { FaCheck } from "react-icons/fa";
-import { TiArrowShuffle } from "react-icons/ti";
-import { useRouter } from "next/navigation";
-import { IoMdPerson } from "react-icons/io";
-import { OptionButtonGroup } from "../../../components/optionButtonGroup";
+import { bebas, pt_sans } from "../../fonts";
 import { updateMovieData } from "@/utils/movieDataUtils";
 import { useSession } from "next-auth/react";
-import { set } from "mongoose";
 import { CastMember } from "@/components/movie/castMember";
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
@@ -30,6 +21,9 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const [movieData, setMovieData] = useState<Movie>({} as Movie);
   const [releaseYear, setReleaseYear] = useState(0);
   const [seen, setSeen] = useState(false);
+  const [posterModal, setPosterModal] = useState(false);
+  const [posterPath, setPosterPath] = useState("");
+
   // Aquí puedes hacer una llamada a la API o acceder a los datos de la película utilizando el movieId
   useEffect(() => {
     const fetchMovieData = async () => {
@@ -58,8 +52,6 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
     setSeen(newSeen);
   };
 
-  const [posterModal, setPosterModal] = useState(false);
-
   return (
     <main className=" flex h-screen flex-col items-center text-2xl overflow-hidden bg-cover w-screen ">
       {isLoading ? (
@@ -79,27 +71,28 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
           {posterModal && (
             <>
               <div className="  w-screen h-[110vh] fixed top-0 left-0 z-30 opacity-80  bg-black shadow-2xl transition-opacity"></div>
-              <div
-                className="absolute pb-40   w-screen h-screen  flex justify-center items-center z-30 "
+              <Button
+                className="absolute pb-[10vh]   w-screen h-screen bg-transparent  flex justify-center items-center z-30 "
                 onClick={() => setPosterModal(false)}
               >
                 <Image
-                  src={
-                    "https://image.tmdb.org/t/p/original/" +
-                    movieData.poster_path
-                  }
+                  src={posterPath}
                   alt={movieData.title ?? "No title"}
                   width={350}
-                  height={750}
+                  height={500}
                   className="rounded-md border-white border-2 transition-opacity"
                 />
-              </div>
+              </Button>
             </>
           )}
           <ScrollShadow className=" z-20 w-screen h-screen mb-[10vh] pt-10 top-0 text-white flex    flex-col items-center  gap-4">
             <Button
-              className=" w-[48vw] h-[35vh] bg-transparent"
+              className=" w-[10rem] min-h-[15.5rem] bg-transparent  "
               onPress={() => {
+                setPosterPath(
+                  "https://image.tmdb.org/t/p/original/" + movieData.poster_path
+                );
+
                 setPosterModal(true);
               }}
               isIconOnly
@@ -113,7 +106,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
               />
             </Button>
 
-            <div className="flex flex-col items-center ">
+            <div className="flex flex-col items-center w-[80vw]">
               <h1 className={`${bebas.className} text-4xl  text-center`}>
                 {movieData.title}
               </h1>
@@ -181,7 +174,8 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                           name={movieData.director.name}
                           character="Director"
                           profile_path={movieData.director.profile_path}
-                          font={font}
+                          setPosterModal={setPosterModal}
+                          setPosterPath={setPosterPath}
                         />
                         <div className=" flex flex-row gap-4 pr-3 justify-center ">
                           {movieData.cast.map((actor) => (
@@ -190,7 +184,8 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
                               name={actor.name}
                               character={actor.character}
                               profile_path={actor.profile_path}
-                              font={font}
+                              setPosterModal={setPosterModal}
+                              setPosterPath={setPosterPath}
                             />
                           ))}
                         </div>
