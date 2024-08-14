@@ -56,7 +56,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
   return (
     <main className=" flex h-screen flex-col items-center text-2xl overflow-hidden bg-cover w-screen ">
       {isLoading ? (
-        <div className="flex flex-col h-screen justify-center items-center ">
+        <div className="flex flex-col h-[100dvh] justify-center items-center ">
           <CircularProgress size="lg" color="default" />
         </div>
       ) : (

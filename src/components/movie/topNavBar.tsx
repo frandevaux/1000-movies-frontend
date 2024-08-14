@@ -34,7 +34,7 @@ export const TopNavBar = (props: {}) => {
     <div className="pt-5 px-10 absolute top-0 w-screen flex justify-between z-30">
       <Button
         isIconOnly
-        className="bg-neutral-900 bg-opacity-60"
+        className="bg-neutral-900 bg-opacity-60 backdrop-blur-sm"
         onPress={() => {
           router.push("/movies/list");
         }}
@@ -43,7 +43,7 @@ export const TopNavBar = (props: {}) => {
       </Button>
       <Button
         isIconOnly
-        className="bg-neutral-900 bg-opacity-60     "
+        className="bg-neutral-900 bg-opacity-60 backdrop-blur-sm"
         onPress={async () => {
           const randomMovieId = await handleGetRandomMovieId();
           router.push("/movies/" + randomMovieId);

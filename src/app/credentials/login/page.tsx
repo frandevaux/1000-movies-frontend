@@ -58,7 +58,7 @@ const LoginPage = () => {
   };
 
   return (
-    <main className="flex h-[80%] w-screen flex-col items-center text-2xl justify-center gap-10   overflow-hidden  ">
+    <main className="flex h-[100dvh] w-screen flex-col items-center text-2xl justify-center gap-10   overflow-hidden  ">
       <div>
         <div className="flex flex-col  text-center gap-5 w-[80vw]">
           <h1 className={`${bebas.className} text-6xl `}>Ingresar</h1>

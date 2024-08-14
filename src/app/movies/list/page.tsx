@@ -253,14 +253,14 @@ export default function Home() {
 
       <div className="overflow-hidden text-ellipsis">
         {isLoading && movieList.length === 0 ? (
-          <div className="flex flex-col h-[60vh] justify-center.items-center">
+          <div className="flex flex-col h-[60vh] justify-center items-center">
             <CircularProgress size="lg" color="default" />
           </div>
         ) : (
           <ScrollShadow
             className={`overflow-y-scroll overflow-x-hidden w-[90vw] ${
               showingSearchBar || showingFilters
-                ? "max-h-[66dvh]"
+                ? "max-h-[60dvh]"
                 : "max-h-[70dvh]"
             } `}
           >
