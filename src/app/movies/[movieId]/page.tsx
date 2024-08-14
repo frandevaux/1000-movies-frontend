@@ -12,6 +12,7 @@ import { bebas, pt_sans } from "../../fonts";
 import { updateMovieData } from "@/utils/movieDataUtils";
 import { useSession } from "next-auth/react";
 import { CastMember } from "@/components/movie/castMember";
+import { TopNavBar } from "@/components/movie/topNavBar";
 
 const MoviePage = ({ params }: { params: { movieId: string } }) => {
   const font = pt_sans.className;
@@ -85,7 +86,9 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
               </Button>
             </>
           )}
-          <ScrollShadow className=" z-20 w-screen h-screen mb-[10vh] pt-10 top-0 text-white flex    flex-col items-center  gap-4">
+          <TopNavBar />
+
+          <ScrollShadow className=" z-20 w-screen h-[85vh]  top-0 text-white flex    flex-col items-center  gap-4">
             <Button
               className=" w-[10rem] min-h-[15.5rem] bg-transparent  "
               onPress={() => {

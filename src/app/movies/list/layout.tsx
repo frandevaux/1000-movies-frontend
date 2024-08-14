@@ -1,7 +1,8 @@
 "use client";
 
-import { Cartelera } from "@/components/cartelera";
 import { useRouter } from "next/navigation";
+import { Cartelera } from "../../../components/cartelera";
+import { OptionButtonGroup } from "../../../components/optionButtonGroup";
 
 export default function Layout({
   children,
@@ -9,5 +10,11 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  return <>{children}</>;
+  return (
+    <>
+      {children}
+
+      <OptionButtonGroup router={router} />
+    </>
+  );
 }
