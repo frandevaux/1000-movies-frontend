@@ -31,7 +31,7 @@ export const TopNavBar = (props: {}) => {
   };
 
   return (
-    <div className="p-10 absolute top-0 w-screen flex justify-between z-30">
+    <div className="pt-5 px-10 absolute top-0 w-screen flex justify-between z-30">
       <Button
         isIconOnly
         className="bg-neutral-900 bg-opacity-60"

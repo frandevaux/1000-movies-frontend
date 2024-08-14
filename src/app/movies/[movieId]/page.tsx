@@ -60,7 +60,7 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
           <CircularProgress size="lg" color="default" />
         </div>
       ) : (
-        <div className="flex flex-col justify-center items-center h-screen   ">
+        <div className="flex flex-col justify-center items-center h-[100dvh]   ">
           <div
             className=" brightness-50 blur-xl w-screen h-[110vh] fixed top-0 left-0 -z-2  bg-cover bg-center bg-no-repeat shadow-2xl transition-opacity"
             style={{
@@ -71,9 +71,9 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
           <div className="absolute w-screen h-screen top-0 left-0  opacity-90 bg-gradient-to-b     from-black from-10% via-transparent to-black to-100%"></div>
           {posterModal && (
             <>
-              <div className="  w-screen h-[110vh] fixed top-0 left-0 z-30 opacity-80  bg-black shadow-2xl transition-opacity"></div>
+              <div className="  w-screen h-[110vh] fixed top-0 left-0 z-40 opacity-80  bg-black shadow-2xl transition-opacity"></div>
               <Button
-                className="absolute pb-[10vh]   w-screen h-screen bg-transparent  flex justify-center items-center z-30 "
+                className="absolute pb-[10vh]   w-screen h-screen bg-transparent  flex justify-center items-center z-40 "
                 onClick={() => setPosterModal(false)}
               >
                 <Image
@@ -86,9 +86,10 @@ const MoviePage = ({ params }: { params: { movieId: string } }) => {
               </Button>
             </>
           )}
+
           <TopNavBar />
 
-          <ScrollShadow className=" z-20 w-screen h-[85vh]  top-0 text-white flex    flex-col items-center  gap-4">
+          <ScrollShadow className=" z-20 w-screen h-[95dvh]  top-0 pt-5 text-white flex    flex-col items-center  gap-4">
             <Button
               className=" w-[10rem] min-h-[15.5rem] bg-transparent  "
               onPress={() => {

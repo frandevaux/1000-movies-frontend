@@ -260,8 +260,8 @@ export default function Home() {
           <ScrollShadow
             className={`overflow-y-scroll overflow-x-hidden w-[90vw] ${
               showingSearchBar || showingFilters
-                ? "max-h-[66vh]"
-                : "max-h-[70vh]"
+                ? "max-h-[66dvh]"
+                : "max-h-[70dvh]"
             } `}
           >
             {movieList.map((movie) => (
