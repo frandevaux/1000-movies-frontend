@@ -2,7 +2,7 @@
 
 Tired of endlessly scrolling through streaming services? This app is your solution to always having a great movie to watch.
 
-**Live Demo:** [**1000 Movies Watchlist**](https://www.google.com/search?q=https://1000-movies-frontend.vercel.app/)
+**Live Demo:** [**1000 Movies Watchlist**](https://1000-movies-frontend.vercel.app/)
 
 -----
 
