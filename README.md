@@ -1,36 +1,20 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 1000 Movies Watchlist
 
-## Getting Started
+Tired of endlessly scrolling through streaming services? This app is your solution to always having a great movie to watch.
 
-First, run the development server:
+**Live Demo:** [**1000 Movies Watchlist**](https://www.google.com/search?q=https://1000-movies-frontend.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-----
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🎬 About This Project
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is a web application designed to help you track your progress through a curated list of 1000 essential films. The main goal is to provide a simple and fun way to discover new movies and decide what to watch next. Forget the indecision and just pick a film from the list or let us choose one for you.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+-----
 
-## Learn More
+## ✨ Features
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+  * **Curated Film Collection**: Browse a handpicked list of 1000 of the most acclaimed and influential movies.
+  * **Movie Details**: Get a quick overview of any film, including a short description and its main cast.
+  * **Watchlist Tracking**: Keep a personal record of every movie you've seen from the list.
+  * **Random Movie Selector**: Can't decide what to watch? Hit the **random** button and let fate pick your next movie night feature\!
